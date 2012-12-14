@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<schema>
+	<widgets>
+		<widget caption="SDM-SEGS" widgetName="OWsdmsegs" xPos="500" yPos="210"/>
+		<widget caption="SDM Rule Browser" widgetName="OWSDMRuleBrowser" xPos="650" yPos="210"/>
+		<widget caption="File to string (2)" widgetName="OWFileSerializer" xPos="190" yPos="230"/>
+		<widget caption="File to string (3)" widgetName="OWFileSerializer" xPos="190" yPos="340"/>
+		<widget caption="File to string (4)" widgetName="OWFileSerializer" xPos="240" yPos="420"/>
+		<widget caption="File to string (5)" widgetName="OWFileSerializer" xPos="340" yPos="470"/>
+		<widget caption="File" widgetName="OWFile" xPos="180" yPos="120"/>
+	</widgets>
+	<channels>
+		<channel enabled="1" inWidgetCaption="SDM-SEGS" outWidgetCaption="File to string (2)" signals="[('FileAsString', 'Ontology 1')]"/>
+		<channel enabled="1" inWidgetCaption="SDM-SEGS" outWidgetCaption="File to string (3)" signals="[('FileAsString', 'Ontology 2')]"/>
+		<channel enabled="1" inWidgetCaption="SDM-SEGS" outWidgetCaption="File to string (4)" signals="[('FileAsString', 'Ontology 3')]"/>
+		<channel enabled="1" inWidgetCaption="SDM-SEGS" outWidgetCaption="File to string (5)" signals="[('FileAsString', 'Mapping')]"/>
+		<channel enabled="1" inWidgetCaption="SDM-SEGS" outWidgetCaption="File" signals="[('Examples', 'ExampleTable')]"/>
+		<channel enabled="1" inWidgetCaption="SDM Rule Browser" outWidgetCaption="SDM-SEGS" signals="[('Rules', 'rules')]"/>
+	</channels>
+	<settings settingsDictionary="{'SDM Rule Browser': '(dp1\n.', 'SDM-SEGS': &quot;(dp1\nS'maximalPvalue'\np2\nF0.050000000000000003\nsS'randomSeed'\np3\nI10\nsS'cutoff'\np4\nI300\nsS'lastdir'\np5\nNsS'minSizeSG'\np6\nI5\nsS'weightGSEA'\np7\nI1\nsS'wracc_k'\np8\nI5\nsS'maxNumSG'\np9\nI99\nsS'legacy'\np10\nI00\nsS'summarize'\np11\nI00\nsS'maxNumTerms'\np12\nI3\nsS'weightFisher'\np13\nI0\nsS'serviceURI'\np14\nS'http://vihar.ijs.si:8091/sdmsegs?wsdl'\np15\nsS'weightPAGE'\np16\nI1\ns.&quot;, 'File to string (3)': &quot;(dp1\nS'lastdir'\np2\nS'D:/programiranje/sdm/bank/demo'\np3\nsS'filename'\np4\nS'D:/programiranje/sdm/bank/demo/geography.owl'\np5\ns.&quot;, 'File to string (5)': &quot;(dp1\nS'lastdir'\np2\nS'D:/programiranje/sdm/bank/demo'\np3\nsS'filename'\np4\nS'D:/programiranje/sdm/bank/demo/map_bank.txt'\np5\ns.&quot;, 'File': &quot;(dp1\nS'widgetHeight'\np2\nI247\nsS'widgetXPosition'\np3\nI240\nsS'widgetYPosition'\np4\nI146\nsS'savedWidgetGeometry'\np5\nS'\\x01\\xd9\\xd0\\xcb\\x00\\x01\\x00\\x00\\x00\\x00\\x00\\xf0\\x00\\x00\\x00\\x92\\x00\\x00\\x02\\x7f\\x00\\x00\\x01\\xae\\x00\\x00\\x00\\xf8\\x00\\x00\\x00\\xb0\\x00\\x00\\x02w\\x00\\x00\\x01\\xa6\\x00\\x00\\x00\\x00\\x00\\x00'\np6\nsS'widgetShown'\np7\nI0\nsS'showAdvanced'\np8\nI0\nsS'createNewOn'\np9\nI1\nsS'widgetWidth'\np10\nI384\nsS'localContextsVersion'\np11\n(I100\nI0\ntp12\nsS'localContexts'\np13\n(lp14\n(iOWContexts\nContext\np15\n(dp16\nS'symbolDK'\np17\nS''\nsS'symbolDC'\np18\nS''\nsS'time'\np19\nF1320936617.4489999\nsS'filename'\np20\nS'D:/programiranje/sdm/bank/demo/bank.tab'\np21\nsbasS'recentFiles'\np22\n(lp23\ng21\nas.&quot;, 'File to string (4)': &quot;(dp1\nS'lastdir'\np2\nS'D:/programiranje/sdm/bank/demo'\np3\nsS'filename'\np4\nS'D:/programiranje/sdm/bank/demo/occupation.owl'\np5\ns.&quot;, 'File to string (2)': &quot;(dp1\nS'lastdir'\np2\nS'D:/programiranje/sdm/bank/demo'\np3\nsS'filename'\np4\nS'D:/programiranje/sdm/bank/demo/banking_services.owl'\np5\ns.&quot;}"/>
+</schema>

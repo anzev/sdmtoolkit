@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY banking_services "http://kt.ijs.si/ontologies/banking_services.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://kt.ijs.si/ontologies/banking_services.owl#"
+     xml:base="http://kt.ijs.si/ontologies/banking_services.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:banking_services="http://kt.ijs.si/ontologies/banking_services.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://kt.ijs.si/ontologies/banking_services.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Account -->
+
+    <owl:Class rdf:about="&banking_services;Account">
+        <rdfs:subClassOf rdf:resource="&banking_services;BankingService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Apartment -->
+
+    <owl:Class rdf:about="&banking_services;Apartment">
+        <rdfs:subClassOf rdf:resource="&banking_services;Loan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#BankingService -->
+
+    <owl:Class rdf:about="&banking_services;BankingService">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Car -->
+
+    <owl:Class rdf:about="&banking_services;Car">
+        <rdfs:subClassOf rdf:resource="&banking_services;Loan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Classic -->
+
+    <owl:Class rdf:about="&banking_services;Classic">
+        <rdfs:subClassOf rdf:resource="&banking_services;Account"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Deposit -->
+
+    <owl:Class rdf:about="&banking_services;Deposit">
+        <rdfs:subClassOf rdf:resource="&banking_services;BankingService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#EuropeShare -->
+
+    <owl:Class rdf:about="&banking_services;EuropeShare">
+        <rdfs:subClassOf rdf:resource="&banking_services;InvestmentFund"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Family -->
+
+    <owl:Class rdf:about="&banking_services;Family">
+        <rdfs:subClassOf rdf:resource="&banking_services;Insurance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#GlobalShare -->
+
+    <owl:Class rdf:about="&banking_services;GlobalShare">
+        <rdfs:subClassOf rdf:resource="&banking_services;InvestmentFund"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Gold -->
+
+    <owl:Class rdf:about="&banking_services;Gold">
+        <rdfs:subClassOf rdf:resource="&banking_services;Account"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Insurance -->
+
+    <owl:Class rdf:about="&banking_services;Insurance">
+        <rdfs:subClassOf rdf:resource="&banking_services;BankingService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#InvestmentFund -->
+
+    <owl:Class rdf:about="&banking_services;InvestmentFund">
+        <rdfs:subClassOf rdf:resource="&banking_services;BankingService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Loan -->
+
+    <owl:Class rdf:about="&banking_services;Loan">
+        <rdfs:subClassOf rdf:resource="&banking_services;BankingService"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#LongTerm -->
+
+    <owl:Class rdf:about="&banking_services;LongTerm">
+        <rdfs:subClassOf rdf:resource="&banking_services;Deposit"/>
+        <owl:disjointWith rdf:resource="&banking_services;ShortTerm"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Personal -->
+
+    <owl:Class rdf:about="&banking_services;Personal">
+        <rdfs:subClassOf rdf:resource="&banking_services;Loan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Regular -->
+
+    <owl:Class rdf:about="&banking_services;Regular">
+        <rdfs:subClassOf rdf:resource="&banking_services;Insurance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Senior -->
+
+    <owl:Class rdf:about="&banking_services;Senior">
+        <rdfs:subClassOf rdf:resource="&banking_services;Insurance"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#ShortTerm -->
+
+    <owl:Class rdf:about="&banking_services;ShortTerm">
+        <rdfs:subClassOf rdf:resource="&banking_services;Deposit"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#Student -->
+
+    <owl:Class rdf:about="&banking_services;Student">
+        <rdfs:subClassOf rdf:resource="&banking_services;Account"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/banking_services.owl#TechnologyShare -->
+
+    <owl:Class rdf:about="&banking_services;TechnologyShare">
+        <rdfs:subClassOf rdf:resource="&banking_services;InvestmentFund"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&banking_services;Apartment"/>
+            <rdf:Description rdf:about="&banking_services;Car"/>
+            <rdf:Description rdf:about="&banking_services;Personal"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&banking_services;Account"/>
+            <rdf:Description rdf:about="&banking_services;Deposit"/>
+            <rdf:Description rdf:about="&banking_services;Insurance"/>
+            <rdf:Description rdf:about="&banking_services;InvestmentFund"/>
+            <rdf:Description rdf:about="&banking_services;Loan"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&banking_services;Family"/>
+            <rdf:Description rdf:about="&banking_services;Regular"/>
+            <rdf:Description rdf:about="&banking_services;Senior"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&banking_services;Classic"/>
+            <rdf:Description rdf:about="&banking_services;Gold"/>
+            <rdf:Description rdf:about="&banking_services;Student"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&banking_services;EuropeShare"/>
+            <rdf:Description rdf:about="&banking_services;GlobalShare"/>
+            <rdf:Description rdf:about="&banking_services;TechnologyShare"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.0.0.1469) http://owlapi.sourceforge.net -->
+

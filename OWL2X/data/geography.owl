@@ -1,0 +1,396 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY geography "http://www.semanticweb.org/ontologies/2010/7/geography.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://kt.ijs.si/ontologies/geography.owl#"
+     xml:base="http://kt.ijs.si/ontologies/geography.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:geography="http://www.semanticweb.org/ontologies/2010/7/geography.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://kt.ijs.si/ontologies/geography.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Augsburg -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Augsburg">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Bavaria"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Baden-Wurttenberg -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Baden-Wurttenberg">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Germany"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Bavaria -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Bavaria">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Germany"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Brescia -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Brescia">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Lombardy"/>
+        <owl:disjointWith rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Milan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Calabria -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Calabria">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Italy"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Catanzaro -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Catanzaro">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Calabria"/>
+        <owl:disjointWith rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Cosenza"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Cosenza -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Cosenza">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Calabria"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Europe -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Europe">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Location"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Frankfurt -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Frankfurt">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Hesse"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Freiburg -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Freiburg">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Baden-Wurttenberg"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Germany -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Germany">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Europe"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Greater -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Greater">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Poland"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Hesse -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Hesse">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Germany"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Italy -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Italy">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Europe"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Kalisz -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Kalisz">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Greater"/>
+        <owl:disjointWith rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Poznan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Karlsruhe -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Karlsruhe">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Baden-Wurttenberg"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Kassel -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Kassel">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Hesse"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Krakow -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Krakow">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Lesser"/>
+        <owl:disjointWith rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Tarnow"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Latina -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Latina">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Lazio"/>
+        <owl:disjointWith rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Rome"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Lazio -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Lazio">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Italy"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Lesser -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Lesser">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Poland"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Location -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Location">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Lombardy -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Lombardy">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Italy"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Masovian -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Masovian">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Poland"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Milan -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Milan">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Lombardy"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Munich -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Munich">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Bavaria"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Nuremberg -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Nuremberg">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Bavaria"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Poland -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Poland">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Europe"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Poznan -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Poznan">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Greater"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Radom -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Radom">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Masovian"/>
+        <owl:disjointWith rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Warsaw"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Rome -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Rome">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Lazio"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Stuttgart -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Stuttgart">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Baden-Wurttenberg"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Tarnow -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Tarnow">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Lesser"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Warsaw -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Warsaw">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Masovian"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/geography.owl#Wiesbaden -->
+
+    <owl:Class rdf:about="http://kt.ijs.si/ontologies/geography.owl#Wiesbaden">
+        <rdfs:subClassOf rdf:resource="http://kt.ijs.si/ontologies/geography.owl#Hesse"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Greater"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Lesser"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Masovian"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Frankfurt"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Kassel"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Wiesbaden"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Baden-Wurttenberg"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Bavaria"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Hesse"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Germany"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Italy"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Poland"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Freiburg"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Karlsruhe"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Stuttgart"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Augsburg"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Munich"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Nuremberg"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Calabria"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Lazio"/>
+            <rdf:Description rdf:about="http://kt.ijs.si/ontologies/geography.owl#Lombardy"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.0.0.1469) http://owlapi.sourceforge.net -->
+

@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY occupation "http://kt.ijs.si/ontologies/occupation.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://kt.ijs.si/ontologies/occupation.owl#"
+     xml:base="http://kt.ijs.si/ontologies/occupation.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:occupation="http://kt.ijs.si/ontologies/occupation.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://kt.ijs.si/ontologies/occupation.owl"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Administration -->
+
+    <owl:Class rdf:about="&occupation;Administration">
+        <rdfs:subClassOf rdf:resource="&occupation;Public"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Construction -->
+
+    <owl:Class rdf:about="&occupation;Construction">
+        <rdfs:subClassOf rdf:resource="&occupation;Industry"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Defense -->
+
+    <owl:Class rdf:about="&occupation;Defense">
+        <rdfs:subClassOf rdf:resource="&occupation;Public"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Doctor -->
+
+    <owl:Class rdf:about="&occupation;Doctor">
+        <rdfs:subClassOf rdf:resource="&occupation;Health"/>
+        <owl:disjointWith rdf:resource="&occupation;Nurse"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Education -->
+
+    <owl:Class rdf:about="&occupation;Education">
+        <rdfs:subClassOf rdf:resource="&occupation;Public"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Energy -->
+
+    <owl:Class rdf:about="&occupation;Energy">
+        <rdfs:subClassOf rdf:resource="&occupation;Utility"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Finance -->
+
+    <owl:Class rdf:about="&occupation;Finance">
+        <rdfs:subClassOf rdf:resource="&occupation;Service"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Health -->
+
+    <owl:Class rdf:about="&occupation;Health">
+        <rdfs:subClassOf rdf:resource="&occupation;Public"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Health-care -->
+
+    <owl:Class rdf:about="&occupation;Health-care">
+        <rdfs:subClassOf rdf:resource="&occupation;Service"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Industry -->
+
+    <owl:Class rdf:about="&occupation;Industry">
+        <rdfs:subClassOf rdf:resource="&occupation;Private"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Manufacturing -->
+
+    <owl:Class rdf:about="&occupation;Manufacturing">
+        <rdfs:subClassOf rdf:resource="&occupation;Industry"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Materials -->
+
+    <owl:Class rdf:about="&occupation;Materials">
+        <rdfs:subClassOf rdf:resource="&occupation;Industry"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Military -->
+
+    <owl:Class rdf:about="&occupation;Military">
+        <rdfs:subClassOf rdf:resource="&occupation;Defense"/>
+        <owl:disjointWith rdf:resource="&occupation;Police"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Nurse -->
+
+    <owl:Class rdf:about="&occupation;Nurse">
+        <rdfs:subClassOf rdf:resource="&occupation;Health"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Occupation -->
+
+    <owl:Class rdf:about="&occupation;Occupation">
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Police -->
+
+    <owl:Class rdf:about="&occupation;Police">
+        <rdfs:subClassOf rdf:resource="&occupation;Defense"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Private -->
+
+    <owl:Class rdf:about="&occupation;Private">
+        <rdfs:subClassOf rdf:resource="&occupation;Occupation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Public -->
+
+    <owl:Class rdf:about="&occupation;Public">
+        <rdfs:subClassOf rdf:resource="&occupation;Occupation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Retail -->
+
+    <owl:Class rdf:about="&occupation;Retail">
+        <rdfs:subClassOf rdf:resource="&occupation;Service"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Service -->
+
+    <owl:Class rdf:about="&occupation;Service">
+        <rdfs:subClassOf rdf:resource="&occupation;Private"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Transportation -->
+
+    <owl:Class rdf:about="&occupation;Transportation">
+        <rdfs:subClassOf rdf:resource="&occupation;Utility"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Unemployed -->
+
+    <owl:Class rdf:about="&occupation;Unemployed">
+        <rdfs:subClassOf rdf:resource="&occupation;Occupation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#Utility -->
+
+    <owl:Class rdf:about="&occupation;Utility">
+        <rdfs:subClassOf rdf:resource="&occupation;Private"/>
+    </owl:Class>
+    
+
+
+    <!-- http://kt.ijs.si/ontologies/occupation.owl#WasteAndWater -->
+
+    <owl:Class rdf:about="&occupation;WasteAndWater">
+        <rdfs:subClassOf rdf:resource="&occupation;Utility"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <owl:Class rdf:about="&owl;Thing"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&occupation;Finance"/>
+            <rdf:Description rdf:about="&occupation;Health-care"/>
+            <rdf:Description rdf:about="&occupation;Retail"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&occupation;Private"/>
+            <rdf:Description rdf:about="&occupation;Public"/>
+            <rdf:Description rdf:about="&occupation;Unemployed"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&occupation;Construction"/>
+            <rdf:Description rdf:about="&occupation;Manufacturing"/>
+            <rdf:Description rdf:about="&occupation;Materials"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&occupation;Industry"/>
+            <rdf:Description rdf:about="&occupation;Service"/>
+            <rdf:Description rdf:about="&occupation;Utility"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&occupation;Energy"/>
+            <rdf:Description rdf:about="&occupation;Transportation"/>
+            <rdf:Description rdf:about="&occupation;WasteAndWater"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="&owl;AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="&occupation;Administration"/>
+            <rdf:Description rdf:about="&occupation;Defense"/>
+            <rdf:Description rdf:about="&occupation;Education"/>
+            <rdf:Description rdf:about="&occupation;Health"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.0.0.1469) http://owlapi.sourceforge.net -->
+
