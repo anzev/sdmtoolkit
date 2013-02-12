@@ -6,7 +6,7 @@
 
 import sys
 import StringIO
-import segs
+#import segs
 
 sys.path.append('..')
 from owl2x import OWL2X
@@ -96,12 +96,12 @@ class gsegs(object):
     
     def run(self, 
             inputData,           # List of the form [..., (id_i, rank_i or label_i), ...] or str.
+            interactions,        # List of the form [..., (id_i, id_j), ...] where id_i interacts with id_j or str.
             mapping,             # List of the form [..., (id_i, URI1, URI2, ...), ...] where id_i is annotated with with the listed URI's or str.
             ont1,                # OWL ontologies as strings 
             ont2 = None, 
             ont3 = None, 
             ont4 = None,
-            interactions = [],        # List of the form [..., (id_i, id_j), ...] where id_i interacts with id_j or str.
             generalTerms = [],
             legacy = False,
             posClassVal = None, 
@@ -123,9 +123,9 @@ class gsegs(object):
             dataFormat = StructuredFormat.FORMAT_LIST,
             progressFname = 'progress.txt',   
             ):
-       
-
+        
         print inputData, mapping
+        
         logger.info("Starting SDM-SEGS.")
         
         # Check if we have properly structured inputs or strings
@@ -179,13 +179,13 @@ class gsegs(object):
             g2g.append([iid, idList])
         
         if not legacy:
-            import segs
+            #import segs
         
             ont, g2ont = OWL2X.get_segs_input(filter(None, [ont1, ont2, ont3, ont4]), mapping)
             numOfOnt = len(filter(None, [ont1, ont2, ont3, ont4]))
             
         else:
-            import segs_legacy as segs
+            #import segs_legacy as segs
             
             # Legacy input of segs - we assume it is already properly formatted
             g2ont = []
@@ -250,13 +250,24 @@ class MissingParameterException(Exception):
 
 
 if __name__ == '__main__':
-    inputData = open('/home/anze/data/bank.tab').read()
-    mapping = open('/home/anze/data/bank_map.txt').read()
-    ont1 = open('/home/anze/data/occupation.owl').read()
-    ont2 = open('/home/anze/data/banking_services.owl').read()
-    ont3 = open('/home/anze/data/geography.owl').read()
-    foo = open('foo.txt', 'w')
-    foo.close()
+#    inputData = open('/home/anze/data/bank.tab').read()
+#    mapping = open('/home/anze/data/bank_map.txt').read()
+#    ont1 = open('/home/anze/data/occupation.owl').read()
+#    ont2 = open('/home/anze/data/banking_services.owl').read()
+#    ont3 = open('/home/anze/data/geography.owl').read()
+    inputData=open('D:/data/bank/bank.tab').read()
+    mapping=open('D:/data/bank/bank_map.txt').read()
+    ont1=open('D:/data/bank/occupation.owl').read() 
+    ont2=open('D:/data/bank/banking_services.owl').read() 
+    ont3=open('D:/data/bank/geography.owl').read()
+    
     runner = gsegs()
-    runner.run(inputData, mapping, ont1, ont2, ont3, interactions=[], dataFormat=StructuredFormat.FORMAT_TAB, posClassVal='Yes', progressFname='foo.txt')
+    kwargs = {'inputData' : inputData, 
+              'interactions' : '', 
+              'mapping' : mapping,
+              'ont1' : ont1, 
+              'ont2' : ont2, 
+              'ont3' : ont3, 
+              'dataFormat' : StructuredFormat.FORMAT_TAB}
+    runner.run(**kwargs)
     
