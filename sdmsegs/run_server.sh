@@ -1,2 +1,2 @@
 #!/bin/sh
-python server_sdmsegs.py http://vihar.ijs.si 8081
+python server_sdmsegs.py 95.87.154.146:8081

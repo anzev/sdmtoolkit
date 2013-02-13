@@ -42,16 +42,18 @@ def sdmsegs_runner(**kwargs):
     return json.dumps(result) # Return as json dictionary
 
 if __name__ == '__main__':
-    if len(sys.argv) <= 2:
-        print 'Usage: python server_sdmsegs.py <machine address> <port>'
+    if len(sys.argv) <= 1:
+        print 'Usage: python server_sdmsegs.py <machine address>:<port>'
         sys.exit(1)
-    address = sys.argv[1]
-    port = int(sys.argv[2])
+    location = sys.argv[1]
+    if not location.startswith('http://'):
+        location = 'http://' + location
+    port = int(location.split(':')[2])
     
     dispatcher = SoapDispatcher(
         'sdmsegs',
-        location = "http://%s:%d/" % (address, port),
-        action = 'http://%s:%d/' % (address, port), # SOAPAction
+        location = location,
+        action = location, # SOAPAction
         namespace = "http://www.example.com/sdmsegs.wsdl", prefix="ns0",
         trace = True,
         ns = True)
@@ -78,12 +80,6 @@ if __name__ == '__main__':
               'weightFisher' : float,
               'weightGSEA' : float,
               'weightPAGE' : float,
-            #summarizeDescriptions = defaults[SUMMARIZE],
-            #randomSeed = defaults[RANDOM_SEED],
-            #level_ont1 = defaults[LEVEL_ONT1],
-            #level_ont2 = defaults[LEVEL_ONT2],
-            #level_ont3 = defaults[LEVEL_ONT3],
-            #level_ont4 = defaults[LEVEL_ONT4],
               'dataFormat' : str
               })
     

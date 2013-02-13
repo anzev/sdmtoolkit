@@ -106,18 +106,18 @@ class gsegs(object):
     }    
     
     def run(self, 
-            progressFname,
             inputData,           # List of the form [..., (id_i, rank_i or label_i), ...].
-            interactions,        # List of the form [..., (id_i, id_j), ...] where id_i interacts with id_j 
             mapping,             # List of the form [..., (id_i, URI1, URI2, ...), ...] where id_i is annotated with with the listed URI's 
             ont1,                # OWL ontologies as strings 
             ont2 = None, 
             ont3 = None, 
             ont4 = None,
+            interactions = [],   # List of the form [..., (id_i, id_j), ...] where id_i interacts with id_j 
             generalTerms = [],
             legacy = False,
             posClassVal = None, 
             cutoff = None, 
+            progressFname = 'progress.txt',
             wracc_k = defaults[WRACC_K], 
             minimalSetSize = defaults[MIN_SET_SIZE],
             maxNumTerms = defaults[MAX_NUM_TERMS],
