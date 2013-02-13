@@ -12,19 +12,46 @@ from BaseHTTPServer import HTTPServer
 from sdmsegs import gsegs
 
 def sdmsegs_runner(**kwargs):
+    """
+    SDM-SEGS web service.
+    
+    Inputs:
+        - inputData: str, a .tab dataset or a (pythonish) list of pairs
+        - interactions: str, list of interacting examples,
+        - mapping : str, a mapping between examples and ontological terms,
+        - ont1-4 : str, ontologies in OWL (legacy=false), or in SEGS's format (legacy=true)
+        - generalTerms : str, terms that are too general (each in new line),
+        - legacy : bool, turns on SEGS mode,
+        - posClassVal : str, if the data is class-labeled, this is the target class,
+        - cutoff : int, if the data is ranked, this is the cutoff value for splitting it into two classes,
+        - wracc_k : int, number of times an example can be covered when selecting with WRAcc,
+        - minimalSetSize : int, minimum number of covered examples,
+        - maxNumTerms : int, maximum number of conjunctions in one rule,
+        - maxReported : int, number of returned rules,
+        - maximalPvalue : float, maximum p-value of a returned rule,
+        - weightFisher, weightGSEA, weightPAGE : float, weights for corresponding score functions; makes sense only if legacy = false,
+        - dataFormat : str, legal values are 'tab' or 'list'
+    Output:
+        - json dictionary encoding the discovered rules.
+        
+    Note: See http://kt.ijs.si/software/SEGS/ for legacy format specification.
+    
+    @author: Anze Vavpetic, 2011 <anze.vavpetic@ijs.si>
+    """
     result = gsegs().run(**kwargs)
     return json.dumps(result) # Return as json dictionary
 
 if __name__ == '__main__':
-    if len(sys.argv) == 0:
-        print 'Usage: python server_sdmsegs.py <port>'
+    if len(sys.argv) <= 2:
+        print 'Usage: python server_sdmsegs.py <machine address> <port>'
         sys.exit(1)
-    port = int(sys.argv[1])
+    address = sys.argv[1]
+    port = int(sys.argv[2])
     
     dispatcher = SoapDispatcher(
-        'SDM-SEGS',
-        location = "http://localhost:%d/" % port,
-        action = 'http://localhost:%d/' % port, # SOAPAction
+        'sdmsegs',
+        location = "http://%s:%d/" % (address, port),
+        action = 'http://%s:%d/' % (address, port), # SOAPAction
         namespace = "http://www.example.com/sdmsegs.wsdl", prefix="ns0",
         trace = True,
         ns = True)
