@@ -7,6 +7,7 @@ import logging
 import tempfile
 import orange
 import StringIO
+import json
 
 DEBUG = False
 
@@ -38,7 +39,7 @@ class StructuredFormat:
             for i, ex in enumerate(data):
                 dataAsList.append((i, ex[data.domain.classVar].value))
         elif format == StructuredFormat.FORMAT_LIST: # List of pairs
-            dataAsList = eval(inputData)  
+            dataAsList = json.loads(inputData)  
         else:
             logger.error('Unspecified input data format.')
         return dataAsList
@@ -47,7 +48,7 @@ class StructuredFormat:
     def parseInteractions(interactions):
         interactionsAsList = []
         for line in StringIO.StringIO(interactions):
-            pyLine = eval(line)
+            pyLine = json.loads(line)
             id1 = pyLine[0]
             for id2 in pyLine[1]:
                 interactionsAsList.append((int(id1), int(id2)))
@@ -57,7 +58,7 @@ class StructuredFormat:
     def parseMapping(mapping):
         mappingAsList = []
         for line in StringIO.StringIO(mapping):
-            pyLine = eval(line)
+            pyLine = json.loads(line)
             mappingAsList.append((pyLine[0], pyLine[1]))
         return mappingAsList
     

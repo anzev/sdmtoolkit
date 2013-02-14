@@ -6,7 +6,7 @@ DELETE = rm -f
 COPY = cp
 PYTHON = python
 
-INCLUDEPYTHON = -I/usr/include/python2.6
+INCLUDEPYTHON = -I/usr/include/python2.7
 #INSTALLDIR = /usr/lib/python2.5/site-packages
 
 MOD_LIB = segs.so
@@ -14,7 +14,6 @@ HEADER = def_var.h
 ALL_OBJECTS = run.o enrichment.o geneset.o parse.o procs.o IntArray.o
 
 TESTING_DIR = ../testing
-
 
 all: clean segs
 new: clean segs install
@@ -42,32 +41,13 @@ IntArray.o:	IntArray.c $(HEADER)
 
 
 install:
-	$(COPY) $(MOD_LIB) /home/anzev/programiranje/ws/WebServices/gSEGS_service_v2/
-	#$(COPY) $(MOD_LIB) ../testing
-	#$(COPY) $(MOD_LIB) ../testing_plants
-	
-#remove:
-#	$(DELETE) $(INSTALLDIR)/$(MOD_LIB)	
+	$(COPY) $(MOD_LIB) ..
 
 clean:
 	$(DELETE) $(MOD_LIB) $(ALL_OBJECTS)
 	$(DELETE) ../testing/$(MOD_LIB)
 	$(DELETE) -r ../testing/results/*
-#$(DELETE) work_dir/*.genelist work_dir/*.html work_dir/*.progress work_dir/*.sets work_dir/*.input
 
-	
-test:	all install
-	$(DELETE) -r ../testing/results/*
-	cd ../testing; \
-	$(PYTHON) pySEGS.py	
-	
-	
-plantTest:	all install
-	$(DELETE) -r ../testing_plants/results/*
-	cd ../testing_plants; \
-	$(PYTHON) pySEGS.py	
-
-	
 	
 	
 	

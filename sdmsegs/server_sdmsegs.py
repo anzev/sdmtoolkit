@@ -9,7 +9,7 @@ import json
 from pysimplesoap.server import SoapDispatcher, SOAPHandler
 from BaseHTTPServer import HTTPServer
 
-from sdmsegs import gsegs
+from sdmsegs import SDMSEGS
 
 def sdmsegs_runner(**kwargs):
     """
@@ -38,7 +38,14 @@ def sdmsegs_runner(**kwargs):
     
     @author: Anze Vavpetic, 2011 <anze.vavpetic@ijs.si>
     """
-    result = gsegs().run(**kwargs)
+    ont1 = kwargs.get('ont1')
+    if not ont1: # If ont1 is left blank, swap with non-blank
+        for ont in ['ont2', 'ont3', 'ont4']:
+            ont_str = kwargs.get(ont)
+            if ont_str:
+                kwargs['ont1'] = ont_str
+                kwargs[ont] = ont1
+    result = SDMSEGS().run(**kwargs)
     return json.dumps(result) # Return as json dictionary
 
 if __name__ == '__main__':

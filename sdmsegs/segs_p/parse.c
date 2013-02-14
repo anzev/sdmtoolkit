@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <python2.6/Python.h>
+#include <python2.7/Python.h>
 #include "def_var.h"
 
 extern IntArray IntArrayNew();

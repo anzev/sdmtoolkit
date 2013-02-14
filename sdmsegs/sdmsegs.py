@@ -15,7 +15,7 @@ from utils import StructuredFormat, logger
 f = open('progress.txt','w')
 f.close()
 
-class gsegs(object):
+class SDMSEGS(object):
     """
     Main wrapper class to be used within scripts.
     """  
@@ -138,9 +138,6 @@ class gsegs(object):
             mapping = StructuredFormat.parseMapping(mapping)
         if type(generalTerms) in [str, unicode]:
             generalTerms = StructuredFormat.parseGeneralTerms(generalTerms)
-        
-        #print inputData, interactions, mapping, generalTerms
-        
         if posClassVal:
             # Labelled data
             pos, neg = [], []
@@ -150,10 +147,8 @@ class gsegs(object):
                     pos.append((iid, label))
                 else:
                     neg.append((iid, label))
-                    
             cutoff = len(pos)
             pos.extend(neg)
-
             data = [[], []]
             for iid, label in pos:
                 data[0].append(int(iid))
@@ -162,90 +157,73 @@ class gsegs(object):
             # Assume ranked data
             if not cutoff:
                 raise MissingParameterException("Cutoff needs to be specified for ranked data by the user!")
-            
             data = [[], []]
             for iid, rank in inputData:
                 data[0].append(int(iid))
                 data[1].append(rank)
-
         inputData = data
-          
         # Parse interactions
         idToList = dict()
         for id1, id2 in interactions:
             if not idToList.has_key(id1):
                 idToList[id1] = []
             idToList[id1].append(id2)
-        
         g2g = []
         for iid, idList in sorted(idToList.items(), key=lambda p: p[0]):
             g2g.append([iid, idList])
-        
         if not legacy:
             import segs
-        
             ont, g2ont = OWL2X.get_segs_input(filter(None, [ont1, ont2, ont3, ont4]), mapping)
             numOfOnt = len(filter(None, [ont1, ont2, ont3, ont4]))
-            
         else:
             import segs_legacy as segs
-            
             # Legacy input of segs - we assume it is already properly formatted
             g2ont = []
             for entry in mapping:
                 g2ont.append([entry[0], entry[1]])
-            
             ont = []
             for entry in StringIO.StringIO(ont1):
                 ont.append(eval(entry))
             numOfOnt = 4
-
         # Create a map from go terms to human-readable descriptions
         ontDict = dict()
         for entry in ont:
             goID = entry[0]
             name = entry[1][1]
             ontDict[goID] = name     
-        
         logger.info("Running SEGS subsystem.")        
-        
-        result = segs.runSEGS(generalTerms = generalTerms,
-                              ontology = ont,
-                              g2g = g2g,
-                              g2ont = g2ont,
-                              progressFname = progressFname,
-                              inputData = inputData,
-                              useMolFunctions = True,
-                              useBioProcesses = numOfOnt > 1,
-                              useCellComponents = numOfOnt > 2,
-                              useKEGG = numOfOnt > 3,
-                              useGeneInteractions = 1 if interactions else 0,
-                              summarize = summarizeDescriptions,
-                              cutoff = cutoff,
-                              minSizeGS = minimalSetSize,
-                              maxNumTerms = maxNumTerms,
-                              GSEAfactor = gsegs.locked[gsegs.GSEA_FACTOR],
-                              numIters = 0,
-                              PrintTopGS = maxReported,
-                              p_value = maximalPvalue if legacy else 1,
-                              weightFisher = weightFisher,
-                              weightGSEA = weightGSEA,
-                              weightPAGE = weightPAGE,
-                              randomSeed = randomSeed,
-                              wracc_k = wracc_k,
-                              level_ont1 = level_ont1,
-                              level_ont2 = level_ont2,
-                              level_ont3 = level_ont3,
-                              level_ont4 = level_ont4
-                              )
-        
+        result = segs.runSEGS(
+            generalTerms = generalTerms,
+            ontology = ont,
+            g2g = g2g,
+            g2ont = g2ont,
+            progressFname = progressFname,
+            inputData = inputData,
+            useMolFunctions = True,
+            useBioProcesses = numOfOnt > 1,
+            useCellComponents = numOfOnt > 2,
+            useKEGG = numOfOnt > 3,
+            useGeneInteractions = 1 if interactions else 0,
+            summarize = summarizeDescriptions,
+            cutoff = cutoff,
+            minSizeGS = minimalSetSize,
+            maxNumTerms = maxNumTerms,
+            GSEAfactor = SDMSEGS.locked[SDMSEGS.GSEA_FACTOR],
+            numIters = 0,
+            PrintTopGS = maxReported,
+            p_value = maximalPvalue if legacy else 1,
+            weightFisher = weightFisher,
+            weightGSEA = weightGSEA,
+            weightPAGE = weightPAGE,
+            randomSeed = randomSeed,
+            wracc_k = wracc_k,
+            level_ont1 = level_ont1,
+            level_ont2 = level_ont2,
+            level_ont3 = level_ont3,
+            level_ont4 = level_ont4)
         del segs
-
-        
-        result['ontDict'] = ontDict
-        
+        result['ontDict'] = ontDict      
         logger.info("SDM-SEGS finished.")
-        
         return result
 
 class MissingParameterException(Exception):
@@ -260,6 +238,6 @@ if __name__ == '__main__':
     ont3 = open('/home/anze/data/geography.owl').read()
     foo = open('foo.txt', 'w')
     foo.close()
-    runner = gsegs()
+    runner = SDMSEGS()
     runner.run(inputData, mapping, ont1, ont2, ont3, interactions=[], dataFormat=StructuredFormat.FORMAT_TAB, posClassVal='Yes', progressFname='foo.txt')
     
