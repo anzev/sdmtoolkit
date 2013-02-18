@@ -222,7 +222,7 @@ class SDMSEGS(object):
             level_ont3 = level_ont3,
             level_ont4 = level_ont4)
         del segs
-        result['ontDict'] = ontDict      
+        result['ontDict'] = ontDict
         logger.info("SDM-SEGS finished.")
         return result
 

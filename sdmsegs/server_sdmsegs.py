@@ -16,7 +16,7 @@ def sdmsegs_runner(**kwargs):
     SDM-SEGS web service.
     
     Inputs:
-        - inputData: str, a .tab dataset or a (pythonish) list of pairs
+        - inputData: str, a .tab dataset or list of pairs
         - interactions: str, list of interacting examples,
         - mapping : str, a mapping between examples and ontological terms,
         - ont1-4 : str, ontologies in OWL (legacy=false), or in SEGS's format (legacy=true)

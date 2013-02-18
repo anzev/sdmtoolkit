@@ -2,17 +2,49 @@
 """
 SDM-Aleph server.
 
-@author: Anže Vavpetič, 2011 <anze.vavpetic@ijs.si>
+@author: Anže Vavpetič, 2012 <anze.vavpetic@ijs.si>
 """
-from webServices.serverBase import Server
-from webServices.common import cmdlServer
+import sys
+import json
+from pysimplesoap.server import SoapDispatcher, SOAPHandler
+from BaseHTTPServer import HTTPServer
 
-import sdmaleph_service as sdm_aleph
+from sdmaleph_service import sdmaleph_runner
 
-if __name__ == "__main__":
-    logFname, port = cmdlServer()
-
-    SERVICE_MODULES = [sdm_aleph]
-    SERVICE_LIST = [x.getService(newPort=port) for x in SERVICE_MODULES]
-    srv = Server(SERVICE_LIST, logFname, port)
-    srv.serveForever()
+if __name__ == '__main__':
+    if len(sys.argv) <= 1:
+        print 'Usage: python server_sdmaleph.py <machine address>:<port>'
+        sys.exit(1)
+    location = sys.argv[1]
+    if not location.startswith('http://'):
+        location = 'http://' + location
+    port = int(location.split(':')[2])
+    
+    dispatcher = SoapDispatcher(
+        'sdmaleph',
+        location = location,
+        action = location, # SOAPAction
+        namespace = "http://www.example.com/sdmaleph.wsdl", prefix="ns0",
+        trace = True,
+        ns = True)
+    
+    # register the user function
+    dispatcher.register_function('sdmaleph', sdmaleph_runner,
+        returns={'theory': str}, 
+        args={
+            'examples' : str,
+            'mapping' : str,
+            'ontologies' : [{'ontology' : str}],
+            'relations' : [{'relation' : str}],
+            'posClassVal' : str,
+            'cutoff' : int,
+            'minPos' : int,
+            'noise' : int,
+            'clauseLen' : int,
+            'dataFormat' : str,
+        })
+    
+    print "Starting server at %s..." % dispatcher.location
+    httpd = HTTPServer(("", port), SOAPHandler)
+    httpd.dispatcher = dispatcher
+    httpd.serve_forever()

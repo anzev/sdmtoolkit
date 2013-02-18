@@ -1,0 +1,15 @@
+target(i0).
+target(i1).
+target(i2).
+target(i3).
+target(i4).
+target(i5).
+target(i6).
+target(i7).
+target(i8).
+target(i9).
+target(i10).
+target(i11).
+target(i12).
+target(i13).
+target(i14).

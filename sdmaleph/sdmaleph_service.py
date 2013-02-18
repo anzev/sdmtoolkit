@@ -1,300 +1,102 @@
 # -*- coding: utf-8 -*-
 """
-Service for the SDM-Aleph system.
+SDM-Aleph server.
 
-@author: Anže Vavpetič, 2011 <anze.vavpetic@ijs.si>
+@author: Anže Vavpetič, 2013 <anze.vavpetic@ijs.si>
 """
-import tempfile
 import sys
-import random
-import os
-import StringIO
-import cPickle
-import re
+import json
+import uuid
+from pysimplesoap.server import SoapDispatcher, SOAPHandler
+from BaseHTTPServer import HTTPServer
 
-from sys import stdout
-from os.path import normpath, exists
-from subprocess import Popen, PIPE
-from time import sleep
-from ZSI import Fault
-
-# Aleph
-from aleph import Aleph
-
-# OWL2X
 sys.path.append('..')
 from owl2x import OWL2X
+from utils import StructuredFormat
+from aleph import Aleph
 
-# O4WS imports
-from webServices import processPool, stubImporter
-from webServices.processPool import GenericWebServiceProcess, NonexistentJobException, UnfinishedJobException
-
-stubs = stubImporter.importZSIstubsFromURI('sdmaleph.wsdl')
-services, server, types, WSDL = stubs.client, stubs.server, stubs.types, stubs.WSDL
-
-# Keyword defines
-JOB_ID = 'jobID'
-PROGRESS_FNAME = 'progressFname'
-BK = 'bk'
-POS = 'pos'
-NEG = 'neg'
-MIN_SET_SIZE = 'minimalSetSize'
-MAX_NUM_TERMS = 'maxNumTerms'
-MODE = 'mode'
-CACHING = 'caching'
-CLAUSE_LEN = 'clauselength'
-LANG = 'language'
-NOISE = 'noise'
-SEARCH = 'search'
-OPENLIST = 'openlist'
-EVAL = 'eval'
-
-# SDM-Aleph defaults
+# Default settings for SDM
 defaults = {
-    MIN_SET_SIZE : 15,
-    MAX_NUM_TERMS : 4,
+    'mode' : 'induce_cover',
+    'clauselength' : 4,
+    'minpos' : 1,
+    'noise' : 1,
+    'evalfn' : 'wracc'    
 }
 
-# Fixed settings for SDM
-aleph_settings = {
-    MODE : 'induce_cover',
-    CACHING : 'true',
-    CLAUSE_LEN : 4,
-    LANG : 1,
-    NOISE : 15,
-    SEARCH : 'heuristic',
-    OPENLIST : 25,
-    EVAL : 'wracc'    
-}
-
-class sdmalephProcess(GenericWebServiceProcess):
+def sdmaleph_runner(examples, mapping, ontologies=[], posClassVal=None, cutoff=None, relations=[],
+        minPos=defaults['minpos'], noise=defaults['noise'], clauseLen=defaults['clauselength'], dataFormat='tab'):
     """
-    The SDM-Aleph process
-    """
-    def run(self):
-        """
-        Run and dump the results.
-        """
-        try:
-            keys = self._kwargs            
-            posEx, negEx, b = OWL2X.get_aleph_input(keys['ontologies'], keys['mapping'], keys['relations'], keys['pos'], keys['neg'])
-            
-            filestem = keys[JOB_ID]
-            runner = Aleph()
-            # Set parameters
-            for setting, val in aleph_settings.items():
-                runner.set(setting, val)
-            # Set eval script
-            runner.setPostScript("toPython('rulesdump.py')", open('topy.pl').read())
-            str_rules = runner.induce(aleph_settings[MODE], filestem, posEx, negEx, b)
-
-            # Read rules
-            sys.path.append(Aleph.DIR)
-            result = self.__conv(__import__('rulesdump').rules, keys['pos'], keys['neg'])
-            sys.path.pop()
-            
-        except Exception, e:
-            print e
-            self.reportError(e)
-        else:
-            self.dumpResults(result)
-            self.finalizeProgress()
-        finally:
-            del result
-            del runner
+    SDM-Aleph web service.
     
-    def __conv(self, rules, pos, neg):
-        """
-        Computes the covered positives examples for the given rules.
-        """
-        N, posEx = float(len(pos + neg)), len(pos)
-        
-        def wracc(r):
-            return len(r['covered'])/N * (len(r['posCovered'])/float(len(r['covered'])) - posEx/N)        
-        
-        i = 0
-        all_positives = set(map(lambda ex: int(ex[0]), pos))
-        for r in rules:
-            r['covered'] = map(lambda x: x['id'], r['covered'])
-            r['posCovered'] = list(all_positives.intersection(r['covered']))
-            r['wracc'] = wracc(r)
-            
-        return rules
+    Inputs:
+        - examples: str, a .tab dataset or a list of pairs
+        - mapping : str, a mapping between examples and ontological terms,
+        - ontologies : a list of {'ontology' : str} dicts
+        - relations : a list of {'relation' : str} dicts
+        - posClassVal : str, if the data is class-labeled, this is the target class,
+        - cutoff : int, if the data is ranked, this is the cutoff value for splitting it into two classes,
+        - minPos : int >= 1, minimum number of true positives per rule
+        - noise : int > 0, false positives allowed per rule
+        - clauseLen : int >= 1, number of predicates per clause,
+        - dataFormat : str, legal values are 'tab' or 'list'
+    Output:
+        - str, the induced theory.
     
-    @staticmethod
-    def buildRulesObjectList(rules, resultObjConstructor):
-        result = resultObjConstructor()
-        
-        ruleList = []
-        for r in sorted(rules, key = lambda x: x['wracc'], reverse=True):
-            ruleObj = result.new_rules()
-            
-            ruleObj.set_element_coveredGenes([str(x) for x in r['covered']])
-            ruleObj.set_element_coveredTopGenes([str(x) for x in r['posCovered']])
-            ruleObj.set_element_wracc(r['wracc'])
-            
-            descrObj = ruleObj.new_description()
-            
-            # Parse the horn clause subgroup description.
-            clause = r['clause']
-            terms = map(lambda x: x.strip(), re.findall(r'([\w\'\s]+\([AB,]+\))', clause[clause.rfind(':-')+2:]))
-            
-            termsList = []
-            for t in terms:
-                termObj = descrObj.new_terms()
-                termObj.set_element_termID(' ')
-                termObj.set_element_name(t)
-                termObj.set_element_domain(' ')
-                termsList.append(termObj)
-                
-            descrObj.set_element_terms(termsList)
-            ruleObj.set_element_description(descrObj)
-            ruleList.append(ruleObj)
-            
-        return ruleList
-        
-class sdmalephService(server.sdmaleph):
+    @author: Anze Vavpetic, 2011 <anze.vavpetic@ijs.si>
     """
-    This class implements the SDM-Aleph web service.
-    """
-    def __init__(self, **kwargs):
-        self.procPool = processPool.ProcesPool()
-        self.procPool.start()
-        server.sdmaleph.__init__(self)
-        
-    def __del__(self):
-        n = self.procPool.getNjobs()
-        if n > 0:
-            stdout.write('Terminating %d running job(s)\n' % n)
-            self.procPool.prepareForTermination()
-            stdout.write('Please wait (max. %d seconds) while all processes are terminated...\n' % processPool.ProcesPool.MONITOR_THREAD_SLEEPTIME)
-            self.procPool.join()
-        else:
-            pass
-        
-    def soap_induce(self, ps):
-        request = ps.Parse(services.induceRequest.typecode)
-        response = services.induceResponse()
-        
-        examples_tmp = request.get_element_examples()
-        relations_tmp = request.get_element_relations()
-        mapping_tmp = request.get_element_mapping()
-        ontologies = request.get_element_ontologies()
-        posClassVal = request.get_element_posClassVal()
-        cutoff = request.get_element_cutoff() if request.get_element_cutoff() else len(examples_tmp)/2
-        minSetSize = request.get_element_minimalSetSize() if request.get_element_minimalSetSize() else defaults['minimalSetSize']
-        maxNumTerms = request.get_element_maxNumTerms() if request.get_element_maxNumTerms() else defaults['maxNumTerms']
-        
-        examples = []
-        for e in examples_tmp:
-            ex_id = e.get_element_id()
-            ex_rank_or_label = e.get_element_rank_or_label() if posClassVal else float(e.get_element_rank_or_label())
-            examples.append((ex_id, ex_rank_or_label))
-        
-        relations = []
-        for rel in relations_tmp:
-            r_name = rel.get_element_name()
-            ext = rel.get_element_extension()
-            pairs = []
-            for pair in ext:
-                pairs.append((pair[0], pair[1]))
-            relations.append([r_name, pairs])
-            
-        mapping = []
-        for e in mapping_tmp:
-            ex_id = e.get_element_id()
-            uris = e.get_element_uri()
-            mapping.append((ex_id, uris))
-            
-        # Convert inputs to prolog.
-        pos = []
-        neg = []
-        if posClassVal:
-            for ex in examples:
-                if ex[1] == posClassVal:
-                    pos.append(ex)
-                else:
-                    neg.append(ex)
-        else:
-            if cutoff > len(examples):
-                raise Fault(Fault.Server, 'The cutoff is set too high: cutoff = %d, number of examples = %d' % (cutoff, len(examples)))
-            
-            pos = filter(lambda ex: ex[1] >= cutoff, examples)
-            if len(examples) - cutoff > 0:
-                neg = random.sample(filter(lambda ex: ex[1] < cutoff, examples), cutoff)
+    examples = StructuredFormat.parseInput(examples, dataFormat)
+    mapping = StructuredFormat.parseMapping(mapping)
+    relations = StructuredFormat.parseRelations(relations)
+    pos, neg = [],[]
+    if posClassVal:
+        for id, val in examples:
+            if val==posClassVal:
+                pos.append((id, val))
             else:
-                neg = filter(lambda ex: ex[1] < cutoff, examples)
-        
-        jobID = processPool.generateID()
-        progressFname = normpath('%s/%s%s' % (sdmalephProcess.resultsDir, jobID, sdmalephProcess.PROGRESS_FNAME_ENDING))         
-        
-        args = {
-            JOB_ID : jobID,
-            PROGRESS_FNAME : progressFname,
-            'ontologies' : ontologies,
-            'mapping' : mapping,
-            'relations' : relations,
-            'pos' : pos,
-            'neg' : neg,
-            'examples' : examples
-        }
+                neg.append((id, val))
+    elif cutoff:
+        pos, neg = examples[:cutoff], examples[cutoff:]
+    else:
+        raise Exception('You must specify either the cutoff or the positive class value.')
+    posEx, negEx, b = OWL2X.get_aleph_input([ont['ontology'] for ont in ontologies], mapping, [rel['relation'] for rel in relations], pos, neg)
+    filestem = str(uuid.uuid4())
+    runner = Aleph()
+    # Set parameters
+    for setting, val in defaults.items():
+       runner.set(setting, val)
+    if minPos >= 1:
+       runner.set('minpos', minPos)
+    else:
+        raise Exception('minPos must be >= 1.')
+    if noise >= 0:
+       runner.set('noise', noise)
+    else:
+        raise Exception('noise must be >= 0.')
+    if clauseLen >= 1:
+        runner.set('clauselength', clauseLen)
+    else:
+        raise Exception('clauseLen must be >= 1.')
+    # Set eval script
+    #runner.setPostScript("toPython('rulesdump.py')", open('topy.pl').read())
+    str_rules = runner.induce(defaults['mode'], filestem, posEx, negEx, b)
+    # Read rules
+    #sys.path.append(Aleph.DIR)
+    #result = __conv(__import__('rulesdump').rules, pos, neg)
+    #sys.path.pop()
+    return str_rules
 
-        proc = sdmalephProcess(kwargs=args)
-        proc.start()
-        
-        try:
-            self.procPool.addProcess(proc, jobid=jobID)
-        except Exception, e:
-            raise Fault(Fault.Server, 'Internal error: %s' % str(e))
-        
-        response.set_element_jobID(jobID)
-        return request, response
-    
-    def soap_getResult(self, ps):
-        request = ps.Parse(services.getResultRequest.typecode)
-        response = services.getResultResponse()
-        
-        jobID = request.get_element_jobID()
-        try:
-            rules = sdmalephProcess.fetchResults(jobID)
-            ruleList = sdmalephProcess.buildRulesObjectList(rules, services.getResultResponse)
-            response.set_element_rules(ruleList)
-        except processPool.NonexistentJobException:
-            if self.procPool.exists(jobID):
-                raise Fault(Fault.Server, 'Job with ID %s is not yet scheduled' % str(jobID))
-            else:
-                raise Fault(Fault.Server, 'Job with ID %s does not exist' % str(jobID))
-        except processPool.UnfinishedJobException:
-            raise Fault(Fault.Server, 'Job with ID %s is not yet finished' % str(jobID))
-        except Exception, e:
-            raise Fault(Fault.Server, 'Internal error: %s' % str(e))
-        
-        return request, response
-    
-    #
-    # TODO: 
-    # 
-    def soap_getProgress(self, ps):
-        request = ps.Parse(services.getProgressRequest.typecode)
-        response = services.getProgressResponse()
-
-        jobID = request.get_element_jobID()
-        try:
-            progress = sdmalephProcess.getProgress(jobID)
-        except NonexistentJobException:
-            if self.procPool.exists(jobID):
-                raise Fault(Fault.Server, 'Job with ID %s is not yet scheduled' % str(jobID))
-            else:
-                raise Fault(Fault.Server, 'Job with ID %s does not exists' % str(jobID))
-        except Exception, e:
-            raise Fault(Fault.Server, 'Internal error: %s' % str(e))
-
-        response.set_element_progress(progress)
-        return request, response
-    
-    
-def getService(newPort=None, ip=None):
-    address = services.sdmalephLocator().getsdmalephAddress()
-    stubImporter.fixServiceAddress(services.sdmalephLocator, sdmalephService, address, WSDL, port=newPort, ip=ip)
-
-    return sdmalephService()
+def __conv(rules, pos, neg):
+    """
+    Computes the covered positives examples for the given rules.
+    """
+    N, posEx = float(len(pos + neg)), len(pos)
+    def wracc(r):
+        return len(r['covered'])/N * (len(r['posCovered'])/float(len(r['covered'])) - posEx/N)         
+    i = 0
+    all_positives = set(map(lambda ex: int(ex[0]), pos))
+    for r in rules:
+        r['covered'] = map(lambda x: x['id'], r['covered'])
+        r['posCovered'] = list(all_positives.intersection(r['covered']))
+        r['wracc'] = wracc(r)
+    return rules

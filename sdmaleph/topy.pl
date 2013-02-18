@@ -56,7 +56,7 @@ py_print_dclause((Lit),Pretty):-
         copy_term(Lit,Lit1),
         numbervars(Lit1,0,_),
         aleph_portray(Lit1,Pretty),
-        write('.'). %, nl.
+        write('.').
 
 
 toPython(File):-

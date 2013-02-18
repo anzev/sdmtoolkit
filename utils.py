@@ -55,6 +55,20 @@ class StructuredFormat:
         return interactionsAsList
     
     @staticmethod
+    def parseRelations(relations):
+        relations_list = []
+        for relation in relations:
+            relation_list = []
+            for line in StringIO.StringIO(relation):
+                pyLine = json.loads(line)
+                id1 = pyLine[0]
+                for id2 in pyLine[1]:
+                    relation_list.append((int(id1), int(id2)))
+            relations_list.append(relation_list)
+        return relations_list
+
+
+    @staticmethod
     def parseMapping(mapping):
         mappingAsList = []
         for line in StringIO.StringIO(mapping):

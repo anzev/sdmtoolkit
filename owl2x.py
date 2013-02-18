@@ -34,7 +34,6 @@ MAIN_TYPE = 'instance'
 ISA_PRED = 'isa'
 
 class OWL2X(object):
-    
     @staticmethod
     def get_segs_input(ontologies, mapping):
         """
@@ -192,89 +191,3 @@ def bappend(table):
         s += e + '\n'
         
     return s
-
-#
-#
-#     TESTS
-#
-#
-            
-def test1():
-    ont1 = open('geography.owl').read()
-    ont2 = open('occupation.owl').read()
-    ont3 = open('banking_services.owl').read()
-    m = open('bank_map.txt')
-    mapping = []
-    
-    for l in m:
-        mapping.append(eval(l))
-    
-    posExaples = range(0, 15)
-    negExamples = range(15, 30)
-    
-    relations = [["married", [(1,4), (16,2), (19, 3)]]]
-    
-    pos, neg, b = OWL2X.get_aleph_input([ont1, ont2, ont3], mapping, relations, posExaples, negExamples)
-
-    #print pos
-    #print neg
-    #print b
-    
-    lala = open('lala.f', 'w')
-    lala.write(pos)
-    lala.close()
-    
-    lala = open('lala.n', 'w')
-    lala.write(neg)
-    lala.close()
-    
-    lala = open('lala.b', 'w')
-    lala.write(b)
-    lala.close()
-    
-    import aleph
-    
-    runner = aleph.Aleph()
-    rules = runner.induce('induce', 'testic', pos, neg, b)
-    print rules
-    
-def test2():
-    ont1 = open('gene_ontology.owl').read()
-    m = open('hsa_map.txt')
-    mapping = []
-    
-    for l in m:
-        mapping.append(eval(l))
-    
-    posExaples = range(0, 15)
-    negExamples = range(15, 30)
-    
-    #relations = [["married", [(1,4), (16,2), (19, 3)]]]
-    
-    pos, neg, b = OWL2X.get_aleph_input([ont1], mapping, [], posExaples, negExamples)
-
-    
-    lala = open('brbr.f', 'w')
-    lala.write(pos)
-    lala.close()
-    
-    lala = open('brbr.n', 'w')
-    lala.write(neg)
-    lala.close()
-    
-    lala = open('brbr.b', 'w')
-    lala.write(b)
-    lala.close()
-    
-    #import aleph
-    
-    #runner = aleph.Aleph()
-    #rules = runner.induce('induce_cover', 'testic2', pos, neg, b)
-    #print rules
-    
-# Test.
-if __name__ == '__main__':
-    
-    #test1()
-    test2()
-    
