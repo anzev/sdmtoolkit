@@ -79,7 +79,7 @@ def sdmaleph_runner(examples, mapping, ontologies=[], posClassVal=None, cutoff=N
         raise Exception('clauseLen must be >= 1.')
     # Set eval script
     #runner.setPostScript("toPython('rulesdump.py')", open('topy.pl').read())
-    str_rules = runner.induce(defaults['mode'], filestem, posEx, negEx, b)
+    str_rules = runner.induce(defaults['mode'], posEx, negEx, b, filestem=filestem)
     # Read rules
     #sys.path.append(Aleph.DIR)
     #result = __conv(__import__('rulesdump').rules, pos, neg)

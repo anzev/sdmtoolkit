@@ -1,14 +1,14 @@
 #
 # Python interface to Aleph.
 # 
-# author: Anze Vavpetic <anze.vavpetic@ijs.si>
+# author: Anze Vavpetic <anze.vavpetic@ijs.si>, 2011
 #
 import os.path
 import shutil
 import logging
 import re
 import tempfile
-from stat import *
+from stat import S_IREAD, S_IEXEC
 from subprocess import Popen, PIPE
 
 DEBUG = True
@@ -22,17 +22,23 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 class Aleph(object):
-    """
-    Main class that handles all the settings and eventually creates a yap process and executes aleph.
-    """
     # The aleph source file is presumed to be in the same dir as this file.
     THIS_DIR = os.path.dirname(__file__) if os.path.dirname(__file__) else '.'
-    DIR = tempfile.mkdtemp()
     ALEPH_FN = 'aleph.pl'
-    ALEPH = DIR + '/' + ALEPH_FN
     YAP = '/usr/local/bin/yap'
     RULES_SUFFIX = 'Rules'
     SCRIPT = 'run_aleph.pl'
+
+    ESSENTIAL_PARAMS = {
+        'depth' : 10,
+        'evalfn' : 'coverage',
+        'i' : 2,
+        'language' : 'inf',
+        'm' : 0.0,
+        'max_features' : 'inf',
+        'minpos' : 1,
+        'noise' : 0
+    }
     
     def __init__(self, verbosity=logging.NOTSET):
         """
@@ -40,20 +46,22 @@ class Aleph(object):
         
         @param logging can be DEBUG, INFO or NOTSET (default). This controls the verbosity of the output.
         """
+        self.tmpdir = tempfile.mkdtemp()
+        self.aleph_script = '%s/%s' % (self.tmpdir, Aleph.ALEPH_FN)
         self.postGoal = None
         self.postScript = None
         # Dictionary of non-default settings
         self.settings = dict()
         logger.setLevel(verbosity)
         
-        shutil.copy("%s/%s" % (Aleph.THIS_DIR, Aleph.ALEPH_FN), Aleph.ALEPH)
+        shutil.copy("%s/%s" % (Aleph.THIS_DIR, Aleph.ALEPH_FN), self.aleph_script)
         
     def set(self, name, value):
         """
         Sets the value of setting 'name' to 'value'.
         """
         self.settings[name] = value
-    
+
     def settingsAsFacts(self, settings):
         """
         Parses a string of settings in the form set(name1, val1), set(name2, val2)...
@@ -62,7 +70,7 @@ class Aleph(object):
         pairs = pattern.findall(settings)
         for name, val in pairs:
             self.set(name, val)
-    
+
     def setPostScript(self, goal, script):
         """
         After learning call the given script using 'goal'.
@@ -70,7 +78,7 @@ class Aleph(object):
         self.postGoal = goal
         self.postScript = script
             
-    def induce(self, mode, filestem, pos, neg, b):
+    def induce(self, mode, pos, neg, b, filestem='default'):
         """
         Induce a theory in 'mode'.
         
@@ -85,11 +93,11 @@ class Aleph(object):
 
         # Make a script to run aleph (with appropriate settings, stack/heap sizes, ...).
         self.__script(mode, filestem)
-    
+
         logger.info("Running aleph...")
 
         # Run the aleph script.
-        p = Popen(['./' + Aleph.SCRIPT], cwd=Aleph.DIR, stdout=PIPE)
+        p = Popen(['./' + Aleph.SCRIPT], cwd=self.tmpdir, stdout=PIPE)
         stdout_str, stderr_str = p.communicate()
         
         logger.debug(stdout_str)
@@ -98,23 +106,22 @@ class Aleph(object):
         logger.info("Done.")
         
         # Return the rules written in the output file.
-        rules = open('%s/%s' % (Aleph.DIR, filestem + Aleph.RULES_SUFFIX)).read()
+        rules = open('%s/%s' % (self.tmpdir, filestem + Aleph.RULES_SUFFIX)).read()
 
-        #shutil.copy('%s/%s.py' % (Aleph.DIR, filestem), '/home/anzev/programiranje/sdm/results/')
+        #shutil.copy('%s/%s.py' % (self.tmpdir, filestem), '/home/anzev/programiranje/sdm/results/')
         
         # Cleanup.
-        self.__cleanup(filestem)
+        self.__cleanup()
         
         return rules
-
 
     def __prepare(self, filestem, pos, neg, b):
         """
         Prepares the needed files.
         """
-        posFile = open('%s/%s.f' % (Aleph.DIR, filestem), 'w')
-        negFile = open('%s/%s.n' % (Aleph.DIR, filestem), 'w')
-        bFile = open('%s/%s.b' % (Aleph.DIR, filestem), 'w')
+        posFile = open('%s/%s.f' % (self.tmpdir, filestem), 'w')
+        negFile = open('%s/%s.n' % (self.tmpdir, filestem), 'w')
+        bFile = open('%s/%s.b' % (self.tmpdir, filestem), 'w')
 
         posFile.write(pos)
         negFile.write(neg)
@@ -124,24 +131,20 @@ class Aleph(object):
         negFile.close()
         bFile.close()
         
-    def __cleanup(self, filestem):
+    def __cleanup(self):
         """
         Cleans up all the temporary files.
         """
         try:
-            os.remove('%s/%s.f' % (Aleph.DIR, filestem))
-            os.remove('%s/%s.n' % (Aleph.DIR, filestem))
-            os.remove('%s/%s.b' % (Aleph.DIR, filestem))
-            os.remove('%s/%s' % (Aleph.DIR, filestem + Aleph.RULES_SUFFIX))
-            os.remove('%s/%s' % (Aleph.DIR, Aleph.SCRIPT))
+            shutil.rmtree(self.tmpdir)
         except:
             logger.info('Problem removing temporary files. The files are probably in use.')
-    
+
     def __script(self, mode, filestem):
         """
         Makes the script file to be run by yap.
         """
-        scriptPath = '%s/%s' % (Aleph.DIR, Aleph.SCRIPT)
+        scriptPath = '%s/%s' % (self.tmpdir, Aleph.SCRIPT)
         script = open(scriptPath, 'w')
         
         #print scriptPath
