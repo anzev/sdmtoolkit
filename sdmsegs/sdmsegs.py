@@ -225,6 +225,8 @@ class SDMSEGS(object):
         logger.info("SDM-SEGS finished.")
         rules = []
         for _, segs_rule in segs_result['A']['WRAcc'].items():
+            if segs_rule['scores']['wracc'] <= 0:
+                continue
             rule = {
                 'support' : segs_rule['topGenes'],
                 'coverage' : segs_rule['allGenes'],
