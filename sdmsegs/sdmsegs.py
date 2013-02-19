@@ -223,22 +223,14 @@ class SDMSEGS(object):
             level_ont4 = level_ont4)
         del segs
         logger.info("SDM-SEGS finished.")
-        def map_back(segs_terms):
-            terms = []
-            for term in segs_terms:
-                if isinstance(term, str):
-                    terms.append(ontDict[term])
-                elif isinstance(term, list):
-                    terms.append(map_back(term))
-            return terms
-        # Return a sane dictionary
         rules = []
         for _, segs_rule in segs_result['A']['WRAcc'].items():
             rule = {
                 'support' : segs_rule['topGenes'],
                 'coverage' : segs_rule['allGenes'],
                 'scores' : segs_rule['scores'],
-                'terms' : map_back(segs_rule['terms'])
+                'terms' : [ontDict[term] for term in segs_rule['terms'] if isinstance(term, str)],
+                'interacting_terms' : [ontDict[term] for term_list in segs_rule['terms'] if isinstance(term_list, list) for term in term_list],
             }
             rules.append(rule)
         return rules
