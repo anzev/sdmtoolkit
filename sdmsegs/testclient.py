@@ -21,14 +21,10 @@ response = client.sdmsegs(inputData=open('../testdata/owl/bank.tab').read(),
                           ont1=open('../testdata/owl/occupation.owl').read(), 
                           ont2=open('../testdata/owl/banking_services.owl').read(), 
                           ont3=open('../testdata/owl/geography.owl').read(), 
-                          legacy=False,
-                          dataFormat='tab',
+                          #legacy=False,
+                          #dataFormat='tab',
                           posClassVal='Yes')
 
-# extract and convert the returned value
-#print response.results
-dict = json.loads(str(response.results))
-#print dict
-#print dict.keys()
-
-cPickle.dump(dict, open('results_example.pkl', 'w'))
+d = json.loads(str(response.rules))
+print d
+cPickle.dump(d, open('results_example.pkl', 'w'))

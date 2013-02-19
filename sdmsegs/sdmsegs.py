@@ -192,7 +192,7 @@ class SDMSEGS(object):
             name = entry[1][1]
             ontDict[goID] = name     
         logger.info("Running SEGS subsystem.")        
-        result = segs.runSEGS(
+        segs_result = segs.runSEGS(
             generalTerms = generalTerms,
             ontology = ont,
             g2g = g2g,
@@ -222,22 +222,26 @@ class SDMSEGS(object):
             level_ont3 = level_ont3,
             level_ont4 = level_ont4)
         del segs
-        result['ontDict'] = ontDict
         logger.info("SDM-SEGS finished.")
-        return result
+        def map_back(segs_terms):
+            terms = []
+            for term in segs_terms:
+                if isinstance(term, str):
+                    terms.append(ontDict[term])
+                elif isinstance(term, list):
+                    terms.append(map_back(term))
+            return terms
+        # Return a sane dictionary
+        rules = []
+        for _, segs_rule in segs_result['A']['WRAcc'].items():
+            rule = {
+                'support' : segs_rule['topGenes'],
+                'coverage' : segs_rule['allGenes'],
+                'scores' : segs_rule['scores'],
+                'terms' : map_back(segs_rule['terms'])
+            }
+            rules.append(rule)
+        return rules
 
 class MissingParameterException(Exception):
     pass
-
-
-if __name__ == '__main__':
-    inputData = open('/home/anze/data/bank.tab').read()
-    mapping = open('/home/anze/data/bank_map.txt').read()
-    ont1 = open('/home/anze/data/occupation.owl').read()
-    ont2 = open('/home/anze/data/banking_services.owl').read()
-    ont3 = open('/home/anze/data/geography.owl').read()
-    foo = open('foo.txt', 'w')
-    foo.close()
-    runner = SDMSEGS()
-    runner.run(inputData, mapping, ont1, ont2, ont3, interactions=[], dataFormat=StructuredFormat.FORMAT_TAB, posClassVal='Yes', progressFname='foo.txt')
-    

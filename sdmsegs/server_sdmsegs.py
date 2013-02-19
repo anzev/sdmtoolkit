@@ -67,7 +67,7 @@ if __name__ == '__main__':
     
     # register the user function
     dispatcher.register_function('sdmsegs', sdmsegs_runner,
-        returns={'results': str}, 
+        returns={'rules': str}, 
         args={'inputData': str, 
               'interactions': str, 
               'mapping' : str,
