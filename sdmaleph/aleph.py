@@ -154,6 +154,7 @@ class Aleph(object):
         
         cat = lambda x: script.write(x + '\n')
         cat("#!%s -L -s50000 -h200000" % Aleph.YAP)
+        cat(":- yap_flag(unknown, fail).")
         cat(":- initialization(run_aleph).")
         cat("run_aleph :- ")
         cat("consult(aleph),")
