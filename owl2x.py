@@ -132,10 +132,10 @@ class OWL2X(object):
         
         # Assume posExamples and negExamples are lists of example IDs
         for ex in posExamples:
-            pos += '%s(i%d).\n' % (TARGET_PRED, int(ex[0]))
+            pos += '%s(i%s).\n' % (TARGET_PRED, str(ex[0]))
 
         for ex in negExamples:
-            neg += '%s(i%d).\n' % (TARGET_PRED, int(ex[0]))
+            neg += '%s(i%s).\n' % (TARGET_PRED, str(ex[0]))
 
         # Now add the custom relations.
         sys.path.append(tmpDir)
@@ -164,10 +164,10 @@ class OWL2X(object):
         
         # Append original example rank / label
         for ex in posExamples:
-            bk += "orig_label(i%d, '%s').\n" % (ex[0], str(ex[1]))
+            bk += "orig_label(i%s, '%s').\n" % (str(ex[0]), str(ex[1]))
         for ex in negExamples:
-            bk += "orig_label(i%d, '%s').\n" % (ex[0], str(ex[1]))
-                
+            bk += "orig_label(i%s, '%s').\n" % (str(ex[0]), str(ex[1]))
+        
         return (pos, neg, bk)
     
     @staticmethod

@@ -94,7 +94,7 @@ def __conv(rules, pos, neg):
     def wracc(r):
         return len(r['covered'])/N * (len(r['posCovered'])/float(len(r['covered'])) - posEx/N)         
     i = 0
-    all_positives = set(map(lambda ex: int(ex[0]), pos))
+    all_positives = set(map(lambda ex: ex[0], pos))
     for r in rules:
         r['covered'] = map(lambda x: x['id'], r['covered'])
         r['posCovered'] = list(all_positives.intersection(r['covered']))
