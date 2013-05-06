@@ -37,13 +37,13 @@ py_print_dclause((H:-B),Pretty):-
 print_example(X) :- 
   atom_concat(i, ID, X),
   %orig_label(X, Label),
-  write('{"id" : '),
+  %write('{"id" : '),
   write('"'),
   write(ID),
-  write('"'),
+  write('"').
   %write(', "rank_or_label" : '),
   %write(Label),
-  write('}').
+  %write('}').
 
 print_covered([X]) :- 
   !,

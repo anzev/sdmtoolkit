@@ -61,7 +61,9 @@ def sdmaleph_runner(examples, mapping, ontologies=[], posClassVal=None, cutoff=N
         raise Exception('You must specify either the cutoff or the positive class value.')
     posEx, negEx, b = OWL2X.get_aleph_input([ont['ontology'] for ont in ontologies], mapping, [rel['relation'] for rel in relations], pos, neg)
     filestem = str(uuid.uuid4())
+    print '4'
     runner = Aleph()
+    print '5'
     # Set parameters
     for setting, val in defaults.items():
        runner.set(setting, val)
@@ -78,14 +80,15 @@ def sdmaleph_runner(examples, mapping, ontologies=[], posClassVal=None, cutoff=N
     else:
         raise Exception('clauseLen must be >= 1.')
     # Set eval script
+    print '5.2'
     str_rules, dump = runner.induce(defaults['mode'], posEx, negEx, b, filestem=filestem)
     rules = __conv(dump, pos, neg)
     #rules_json = json.dumps(__conv(dump, pos, neg))
-    
+    print '5.5'
     rules_w_scores = ''
     for rule in rules:
         rules_w_scores += '%s [sup=%d, cov=%d, wracc=%.3f]\n' % (rule['clause'], len(rule['posCovered']), len(rule['covered']), rule['wracc'])
-    
+    print '6'
     return rules_w_scores
     #return str_rules
 
@@ -93,13 +96,15 @@ def __conv(rules, pos, neg):
     """
     Computes the covered positives examples for the given rules.
     """
+    print 'conv'
+    print rules, pos, neg
     N, posEx = float(len(pos + neg)), len(pos)
     def wracc(r):
         return len(r['covered'])/N * (len(r['posCovered'])/float(len(r['covered'])) - posEx/N)         
     i = 0
     all_positives = set(map(lambda ex: ex[0], pos))
     for r in rules:
-        r['covered'] = map(lambda x: x['id'], r['covered'])
+        #r['covered'] = #map(lambda x: x['id'], r['covered'])
         r['posCovered'] = list(all_positives.intersection(r['covered']))
         r['wracc'] = wracc(r)
     return rules

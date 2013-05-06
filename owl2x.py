@@ -138,8 +138,11 @@ class OWL2X(object):
             neg += '%s(i%s).\n' % (TARGET_PRED, str(ex[0]))
 
         # Now add the custom relations.
+        print tmpDir
         sys.path.append(tmpDir)
         import b
+        
+        print '1'
         
         # Assumes relations has the form: [[r_name1, [(a, b), ...]], [r_name2, [...]], ...]
         for relation in relations:
@@ -149,7 +152,7 @@ class OWL2X(object):
             b.determinations.append(":- determination(%s/1, %s/2)." % (TARGET_PRED, r_name))
             for pair in relation[1]:
                 b.definitions.append("%s(i%s, i%s)." % (r_name, pair[0], pair[1]))
-
+        print '2'
         bk = ""
         bk += bappend(b.table)
         bk += bappend(b.modes)
