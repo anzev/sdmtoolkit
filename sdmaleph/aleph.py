@@ -8,6 +8,7 @@ import shutil
 import logging
 import re
 import tempfile
+import sys
 from stat import S_IREAD, S_IEXEC
 from subprocess import Popen, PIPE
 
@@ -88,6 +89,9 @@ class Aleph(object):
         @param neg String of negative examples.
         @param b String with background knowledge.
         """
+        # Set eval script
+        self.setPostScript("toPython('rulesdump.py')", open('topy.pl').read())
+                
         # Write the inputs to appropriate files.
         self.__prepare(filestem, pos, neg, b)
 
@@ -108,12 +112,18 @@ class Aleph(object):
         # Return the rules written in the output file.
         rules = open('%s/%s' % (self.tmpdir, filestem + Aleph.RULES_SUFFIX)).read()
 
-        #shutil.copy('%s/%s.py' % (self.tmpdir, filestem), '/home/anzev/programiranje/sdm/results/')
-        
+        # Get dump
+        try:
+            sys.path.append(self.tmpdir)
+            dump = __import__('rulesdump').rules
+            sys.path.pop()
+        except:
+            dump = []
+                
         # Cleanup.
         self.__cleanup()
         
-        return rules
+        return rules, dump
 
     def __prepare(self, filestem, pos, neg, b):
         """
@@ -168,3 +178,4 @@ class Aleph(object):
             cat(self.postGoal + ".")
             cat(self.postScript)
         script.close()
+        

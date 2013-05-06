@@ -78,13 +78,16 @@ def sdmaleph_runner(examples, mapping, ontologies=[], posClassVal=None, cutoff=N
     else:
         raise Exception('clauseLen must be >= 1.')
     # Set eval script
-    #runner.setPostScript("toPython('rulesdump.py')", open('topy.pl').read())
-    str_rules = runner.induce(defaults['mode'], posEx, negEx, b, filestem=filestem)
-    # Read rules
-    #sys.path.append(Aleph.DIR)
-    #result = __conv(__import__('rulesdump').rules, pos, neg)
-    #sys.path.pop()
-    return str_rules
+    str_rules, dump = runner.induce(defaults['mode'], posEx, negEx, b, filestem=filestem)
+    rules = __conv(dump, pos, neg)
+    #rules_json = json.dumps(__conv(dump, pos, neg))
+    
+    rules_w_scores = ''
+    for rule in rules:
+        rules_w_scores += '%s [sup=%d, cov=%d, wracc=%.3f]\n' % (rule['clause'], len(rule['posCovered']), len(rule['covered']), rule['wracc'])
+    
+    return rules_w_scores
+    #return str_rules
 
 def __conv(rules, pos, neg):
     """

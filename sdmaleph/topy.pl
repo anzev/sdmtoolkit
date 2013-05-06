@@ -38,7 +38,9 @@ print_example(X) :-
   atom_concat(i, ID, X),
   %orig_label(X, Label),
   write('{"id" : '),
+  write('"'),
   write(ID),
+  write('"'),
   %write(', "rank_or_label" : '),
   %write(Label),
   write('}').
